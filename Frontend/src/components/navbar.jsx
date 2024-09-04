@@ -2,7 +2,7 @@ import React from 'react';
 
 const Navbar = () => {
   const navItems = [
-    'Home', 'Experience', 'Projects', 'Certifications', 'Skills', 'Education', 'Contact'
+    'Home', 'Experience', 'Projects', 'Certifications', 
   ];
 
   return (
