@@ -1,9 +1,15 @@
 import React from 'react';
 
-const Navbar = () => {
+
+const Navbar = ({setCurPage, curPage}) => {
   const navItems = [
     'Home', 'Experience', 'Projects', 'Certifications', 
   ];
+  const navItemComponents = [
+    'HomePage', 'Experience','Projects', 'Certifications', 
+  ]
+  const navItemClasses = "px-3 py-2 text-sm text-white bg-gray-900 bg-opacity-80 rounded-md hover:bg-opacity-100 transition-all duration-300"
+  
 
   return (
     <div className="bg-black w-full">
@@ -27,14 +33,20 @@ const Navbar = () => {
 
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-wrap justify-center sm:justify-end gap-2 relative z-10">
-            {navItems.map((item) => (
-              <div
+            {navItems.map((item, index) => {
+                let highlight = ''
+                if(curPage === navItemComponents[index]){
+                    highlight = 'highlight'
+                }
+                return(
+              <div onClick={() => setCurPage(navItemComponents[index])}
                 key={item}
-                className="px-3 py-2 text-sm text-white bg-gray-900 bg-opacity-80 rounded-md hover:bg-opacity-100 transition-all duration-300"
+                className={navItemClasses + ' ' + highlight}
               >
                 {item}
               </div>
-            ))}
+            )
+            })}
           </div>
         </div>
       </div>
