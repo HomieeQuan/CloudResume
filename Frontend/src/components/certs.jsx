@@ -1,28 +1,32 @@
 import React from 'react';
+import az104 from '../images/104.jpg'
+import az305 from '../images/305.jpg'
+import az500 from '../images/500.png'
+import securityplus from '../images/security.png'
 
 const Certifications = () => {
   const certifications = [
     {
       title: "Microsoft Azure Administrator (AZ-104)",
-      logo: "/path/to/aws-logo.png",
+      logo: az104,
       credentialId: "AWS-1234567",
       issueDate: "October 2024"
     },
     {
-      title: "Microsoft  Solutions Architect (AZ-304)",
-      logo: "/path/to/azure-logo.png",
+      title: "Microsoft  Solutions Architect (AZ-305)",
+      logo: az305,
       credentialId: "MSFT-AZ204",
       issueDate: "October 2024"
     },
     {
       title: "Microsoft  Security Engineer (AZ-500)",
-      logo: "/path/to/gcp-logo.png",
+      logo: az500,
       credentialId: "GCP-PCA-2023",
       issueDate: "November 2024"
     },
     {
       title: "Secuirty  + (701)",
-      logo: "/path/to/kubernetes-logo.png",
+      logo: securityplus,
       credentialId: "CKA-1234",
       issueDate: "In Progress"
     },

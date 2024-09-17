@@ -1,5 +1,7 @@
 import React from 'react';
-import { User, MapPin, Download, Linkedin, Github } from 'lucide-react';
+import { MapPin, Download, Linkedin, Github } from 'lucide-react';
+import Quanimage from "../images/Quan.png";
+
 
 const HomePage = () => (
   <div className="relative min-h-screen w-full bg-black text-white p-4 overflow-hidden">
@@ -25,8 +27,8 @@ const HomePage = () => (
       <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
         <div className="flex flex-col items-center gap-4">
           <div className="w-40 h-40 bg-cyan-500 bg-opacity-20 rounded-full flex items-center justify-center p-2">
-            <div className="w-full h-full bg-black bg-opacity-50 rounded-full flex items-center justify-center">
-              <User size={64} className="text-cyan-300" />
+            <div className="w-full h-full bg-black bg-opacity-50 rounded-full flex items-center justify-center overflow-hidden">
+              <img src={Quanimage} alt="Taquan Middleton" className="w-full h-full object-cover" />
             </div>
           </div>
           <div className="flex gap-4">
@@ -58,7 +60,7 @@ const HomePage = () => (
       <div className="mt-8">
         <h3 className="text-2xl font-semibold text-white mb-4">About Me</h3>
         <p className="text-cyan-100 leading-relaxed">
-        Growing up, I was exposed to various challenges, and there weren’t many future career prospects unrelated to playing professional sports or becoming involved in street life. My first exposure to tech was in my younger years. I’d wake up early to attend a computer class that taught basic software and hardware fundamentals. Technology became my escape and source of hope for a better future. As a software engineer, my diverse set of skills and viewpoints enable me to bring fresh and valuable perspectives to the table. I’m highly motivated to use my skills to create equitable solutions. I approach projects creatively while thinking outside the box and am confident that I can make a valuable contribution to any team.
+        Growing up, I was exposed to various challenges, and there weren't many future career prospects unrelated to playing professional sports or becoming involved in street life. My first exposure to tech was in my younger years. I'd wake up early to attend a computer class that taught basic software and hardware fundamentals. Technology became my escape and source of hope for a better future. As a software engineer, my diverse set of skills and viewpoints enable me to bring fresh and valuable perspectives to the table. I'm highly motivated to use my skills to create equitable solutions. I approach projects creatively while thinking outside the box and am confident that I can make a valuable contribution to any team.
         </p>
       </div>
     </div>
