@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
+import Visitorcount from './visitorcount';
 
 
 const Navbar = () => {
@@ -14,7 +14,7 @@ const Navbar = () => {
     const navItemClasses = "px-3 py-2 text-sm text-white bg-gray-900 bg-opacity-80 rounded-md hover:bg-opacity-100 transition-all duration-300"
 
     const location = useLocation()
-    console.log(location.pathname)
+    
 
 
     return (
@@ -39,6 +39,7 @@ const Navbar = () => {
 
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="flex flex-wrap justify-center sm:justify-end gap-2 relative z-10">
+                        <Visitorcount/>
                     {navItems.map((item, index) => {
                             let highlight = ''
                             if (location.pathname === navItemRoutes[index]) {

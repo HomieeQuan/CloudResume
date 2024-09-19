@@ -9,22 +9,23 @@ import Experience from './components/experience'
 import Projects from './components/projects'
 import Certifications from './components/certs'
 
+
 function App() {
-  // const [count, setCount] = useState(0)
-  // const [array, setArray] = useState([])
+  const [count, setCount] = useState(0)
+  const [array, setArray] = useState([])
  
   
 
 
 
-  // const fetchApi = async () => {
-  //   const response = await axios.get('http://localhost:8080/api/users')
-  //   console.log(response.data.users)
-  //   setArray(response.data.users)
-  // }
-  // useEffect(() => {
-  //   fetchApi()
-  // }, [])
+  const fetchApi = async () => {
+    const response = await axios.get('http://localhost:8080/api/users')
+    console.log(response.data.users)
+    setArray(response.data.users)
+  }
+  useEffect(() => {
+    fetchApi()
+  }, [])
 
   return (
     <Router>
