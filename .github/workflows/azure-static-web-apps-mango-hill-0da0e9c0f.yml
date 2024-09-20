@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies and build
         run: |
           cd Frontend
-          npm ci
+          npm install
           npm run build
         env:
           CI: false  # This prevents treats warnings as errors
