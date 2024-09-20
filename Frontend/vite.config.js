@@ -7,7 +7,7 @@ export default defineConfig({
     postcss: './postcss.config.js',
   },
   build: {
-    outDir: 'build', // This will output to a 'build' folder instead of 'dist'
+    outDir: 'dist', // This will output to a 'build' folder instead of 'dist'
     emptyOutDir: true
   }
 })
