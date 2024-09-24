@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify, make_response
 from datetime import datetime, timedelta
 import time
+from dotenv import load_dotenv
 from flask_cors import CORS
+load_dotenv()
 
 app = Flask(__name__)
 cors = CORS(app,origins='*')
