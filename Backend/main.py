@@ -1,34 +1,80 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, abort
 from datetime import datetime, timedelta
 import time
 from dotenv import load_dotenv
 from flask_cors import CORS
+import os
+from azure.cosmos import CosmosClient, PartitionKey
+from datetime import datetime, timezone
+import uuid
 load_dotenv()
 
+
+URL = os.getenv('COSMOS_URI')
+KEY = os.getenv('COSMOS_KEY')
+DATABASE_NAME = os.getenv('COSMOS_DATABASE')
+CONTAINER_NAME = os.getenv('COSMOS_CONTAINER')
+
+
+# Initialize the Cosmos client
+client = CosmosClient(URL, credential=KEY)
+database = client.get_database_client(DATABASE_NAME)
+container = database.get_container_client(CONTAINER_NAME)
+
 app = Flask(__name__)
-cors = CORS(app,origins='*')
+cors = CORS(app, origins='*')
+
 
 @app.route('/api/users', methods=['GET'])
 def users():
     return jsonify(
         {
-           'users': [
-               'john',
-               'doe',
-           ] 
+            'users': [
+                'john',
+                'doe',
+            ]
         }
     )
+
 
 @app.route('/api/visitorcount', methods=['GET'])
 def visitorcount():
     response = make_response(jsonify({
-           'visitorcount':7, 
-        }))
+        'visitorcount': 7,
+    }))
     visit(response)
     return response
-        
-    
 
+
+@app.route('/api/new_visit', methods=['POST'])
+def new_visit():
+    # Get the JSON data
+    data = request.get_json()
+
+    # Extract user information
+    user_id = data.get('user_id')
+
+    # Create a document with a timestamp
+    current_time = datetime.now(timezone.utc).isoformat()
+
+    # Create a new item
+    new_visitor = {
+        'id': str(uuid.uuid4()),  # Generate a unique UUID
+        "user_id": user_id,
+        "time_stamp": current_time,
+
+
+    }
+    # Create the item in the container
+    created_item = container.create_item(body=new_visitor)
+    print(created_item)
+
+    if created_item:
+        return jsonify({"visitor_id": created_item['id']})
+    else:
+        abort(500, description="An error occurred on the server")
+
+    
 
 
 
@@ -41,8 +87,9 @@ def visit(response):
 
     if last_visit_cookie:
         # Convert the cookie timestamp back to datetime
-        last_visit_time = datetime.strptime(last_visit_cookie, '%Y-%m-%d %H:%M:%S')
-        
+        last_visit_time = datetime.strptime(
+            last_visit_cookie, '%Y-%m-%d %H:%M:%S')
+
         # Check if the time difference is greater than 8 hours
         if current_time - last_visit_time > timedelta(minutes=5):
             new_visit = True
@@ -52,15 +99,10 @@ def visit(response):
         # First visit
         new_visit = True
 
-    
-
     if new_visit:
         # Update or set the 'last_visit' cookie with the current timestamp
-        response.set_cookie('last_visit', current_time.strftime('%Y-%m-%d %H:%M:%S'), max_age=8*3600)
-    
-    
-
-
+        response.set_cookie('last_visit', current_time.strftime(
+            '%Y-%m-%d %H:%M:%S'), max_age=8*3600)
 
 
 if __name__ == '__main__':
