@@ -7,6 +7,8 @@ import os
 from azure.cosmos import CosmosClient, PartitionKey
 from datetime import datetime, timezone
 import uuid
+import requests
+import json
 load_dotenv()
 
 
@@ -14,6 +16,8 @@ URL = os.getenv('COSMOS_URI')
 KEY = os.getenv('COSMOS_KEY')
 DATABASE_NAME = os.getenv('COSMOS_DATABASE')
 CONTAINER_NAME = os.getenv('COSMOS_CONTAINER')
+TESTURL = os.getenv('TESTURL')
+AZURECODE = os.getenv('AZURECODE')
 
 
 # Initialize the Cosmos client
@@ -105,5 +109,45 @@ def visit(response):
             '%Y-%m-%d %H:%M:%S'), max_age=8*3600)
 
 
+@app.route('/api/testazure', methods=['POST'])
+def testazure():
+    url = TESTURL + '?code=' + AZURECODE
+    print(url)
+
+    try:
+        # Extract the 'name' and 'message' from the request body
+        request_data = request.get_json()
+        name = request_data.get('name', 'No Name Provided')
+        
+
+        # Define headers and payload for the external request
+        headers = {'Content-Type': 'application/json'}
+        payload = {'name': name}
+        
+        # Make the external POST request
+        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        response.raise_for_status()  # Raise an exception for HTTP errors
+
+        # Return the response from the external API as JSON
+        print(response.json())
+        return jsonify(response.json())
+    
+    
+    except requests.exceptions.HTTPError as err:
+        return jsonify({'error': f"HTTP error occurred: {err}"})
+    except Exception as err:
+        return jsonify({'error': f"Other error occurred: {err}"})
+
+
+    
+
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
+
+
+
+
+# curl -X POST http://127.0.0.1:8080/api/testazure \
+# -H "Content-Type: application/json" \
+# -d '{"name": "john"}'
+
