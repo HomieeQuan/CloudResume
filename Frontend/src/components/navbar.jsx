@@ -5,11 +5,11 @@ import Visitorcount from './visitorcount';
 
 const Navbar = () => {
     const navItems = [
-        'Home', 'Experience', 'Projects', 'Certifications',
+        'Home', 'Experience', 'Projects', 'Certifications', 'postreqquest'
     ];
       
     const navItemRoutes = [
-        '/', '/experience', '/projects', '/certs'
+        '/', '/experience', '/projects', '/certs', '/postrequest'
     ]
     const navItemClasses = "px-3 py-2 text-sm text-white bg-gray-900 bg-opacity-80 rounded-md hover:bg-opacity-100 transition-all duration-300"
 

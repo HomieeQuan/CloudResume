@@ -7,6 +7,7 @@ import Navbar from './components/navbar'
 import Experience from './components/experience'
 import Projects from './components/projects'
 import Certifications from './components/certs'
+import PostRequestComponent from './components/postrequest';
 
 
 function App() {
@@ -55,9 +56,10 @@ function App() {
             <Route path="/experience" element={<Experience />} />
             <Route path="/projects" element={<Projects />} />
             <Route path='/certs' element={<Certifications />} />
+            <Route path='/postrequest' element={<PostRequestComponent />} />
           </Routes>
           <div className="container mx-auto px-4 py-8">
-
+              
 
           </div>
         </div>
@@ -72,6 +74,7 @@ function App() {
       }
     `} </style>
       </div>
+      
 
     </Router>
   );
