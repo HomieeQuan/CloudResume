@@ -12,18 +12,20 @@ import json
 load_dotenv()
 
 
-URL = os.getenv('COSMOS_URI')
-KEY = os.getenv('COSMOS_KEY')
-DATABASE_NAME = os.getenv('COSMOS_DATABASE')
-CONTAINER_NAME = os.getenv('COSMOS_CONTAINER')
+# URL = os.getenv('COSMOS_URI')
+# KEY = os.getenv('COSMOS_KEY')
+# DATABASE_NAME = os.getenv('COSMOS_DATABASE')
+# CONTAINER_NAME = os.getenv('COSMOS_CONTAINER')
 TESTURL = os.getenv('TESTURL')
 AZURECODE = os.getenv('AZURECODE')
+AZURECODE2 = os.getenv('AZURECODE2')
+BASEURL = os.getenv('BASEURL')
 
 
 # Initialize the Cosmos client
-client = CosmosClient(URL, credential=KEY)
-database = client.get_database_client(DATABASE_NAME)
-container = database.get_container_client(CONTAINER_NAME)
+# client = CosmosClient(URL, credential=KEY)
+# database = client.get_database_client(DATABASE_NAME)
+# container = database.get_container_client(CONTAINER_NAME)
 
 app = Flask(__name__)
 cors = CORS(app, origins='*')
@@ -41,42 +43,72 @@ def users():
     )
 
 
-@app.route('/api/visitorcount', methods=['GET'])
+@app.route('/api/incrementvisitorcount', methods=['GET'])
 def visitorcount():
-    response = make_response(jsonify({
-        'visitorcount': 7,
-    }))
-    visit(response)
-    return response
+    url = BASEURL + '?code=' + AZURECODE2
+    print(url)
+
+    try:
+        # Extract the 'name' and 'message' from the request body
+        # request_data = request.get_json()
+        # name = request_data.get('name', 'No Name Provided')
+        
+
+        # Define headers and payload for the external request
+        headers = {'Content-Type': 'application/json'}
+        # payload = {'name': name}
+        
+        # Make the external POST request
+        # response = requests.post(url, headers=headers, data=json.dumps(payload))
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+
+        # response = make_response(jsonify({
+        #     'visitorcount': 7,
+        # }))
+    
+
+        # Return the response from the external API as JSON
+        print(response.json())
+        return jsonify(response.json())
+    
+    
+    except requests.exceptions.HTTPError as err:
+        return jsonify({'error': f"HTTP error occurred: {err}"})
+    except Exception as err:
+        return jsonify({'error': f"Other error occurred: {err}"})
 
 
-@app.route('/api/new_visit', methods=['POST'])
-def new_visit():
-    # Get the JSON data
-    data = request.get_json()
-
-    # Extract user information
-    user_id = data.get('user_id')
-
-    # Create a document with a timestamp
-    current_time = datetime.now(timezone.utc).isoformat()
-
-    # Create a new item
-    new_visitor = {
-        'id': str(uuid.uuid4()),  # Generate a unique UUID
-        "user_id": user_id,
-        "time_stamp": current_time,
+  
 
 
-    }
-    # Create the item in the container
-    created_item = container.create_item(body=new_visitor)
-    print(created_item)
+# @app.route('/api/new_visit', methods=['POST'])
+# def new_visit():
+#     # Get the JSON data
+#     data = request.get_json()
 
-    if created_item:
-        return jsonify({"visitor_id": created_item['id']})
-    else:
-        abort(500, description="An error occurred on the server")
+#     # Extract user information
+#     user_id = data.get('user_id')
+
+#     # Create a document with a timestamp
+#     current_time = datetime.now(timezone.utc).isoformat()
+
+#     # Create a new item
+#     new_visitor = {
+#         'id': str(uuid.uuid4()),  # Generate a unique UUID
+#         "user_id": user_id,
+#         "time_stamp": current_time,
+
+
+#     }
+#     # Create the item in the container
+#     created_item = container.create_item(body=new_visitor)
+#     print(created_item)
+
+#     if created_item:
+#         return jsonify({"visitor_id": created_item['id']})
+#     else:
+#         abort(500, description="An error occurred on the server")
 
     
 
@@ -147,7 +179,35 @@ if __name__ == '__main__':
 
 
 
-# curl -X POST http://127.0.0.1:8080/api/testazure \
-# -H "Content-Type: application/json" \
-# -d '{"name": "john"}'
+# curl -X POST http://127.0.0.1:8080/api/testazure -H "Content-Type: application/json" -d '{"name": "john"}'
+
+# curl -X POST http://127.0.0.1:8080/api/incrementvisitorcount 
+
+# Cosmos DB connection settings
+# cosmos_uri = os.environ["CosmosDBEndpointUri"]
+# cosmos_key = os.environ["CosmosDBPrimaryKey"]
+# database_name = "CloudResume"
+# container_name = "ResumeContainer"
+
+# # Create Cosmos DB client
+# client = cosmos_client.CosmosClient(cosmos_uri, credential=cosmos_key)
+# database = client.get_database_client(database_name)
+# container = database.get_container_client(container_name)
+
+
+# @app.route(route="incrementvisitorcount", auth_level=func.AuthLevel.FUNCTION)
+# def incrementvisitorcount(req: func.HttpRequest) -> func.HttpResponse:
+    
+#     logging.info(client)
+
+   
+#     response = {
+#         "visitor_count": 8
+#     }
+#     logging.info('visitor count processed')
+#     return func.HttpResponse(
+#         json.dumps(response),
+#         mimetype="application/json",  # Set the correct content type
+#         status_code=200
+#     )
 
