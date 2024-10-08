@@ -43,9 +43,9 @@ def users():
     )
 
 
-@app.route('/api/incrementvisitorcount', methods=['GET'])
+@app.route('/api/inc_visitor_count', methods=['GET'])
 def visitorcount():
-    url = BASEURL + '?code=' + AZURECODE2
+    url = BASEURL + 'inc_visitor_count' + '?code=' + AZURECODE
     print(url)
 
     try:
@@ -181,7 +181,7 @@ if __name__ == '__main__':
 
 # curl -X POST http://127.0.0.1:8080/api/testazure -H "Content-Type: application/json" -d '{"name": "john"}'
 
-# curl -X POST http://127.0.0.1:8080/api/incrementvisitorcount 
+# curl -X GET http://127.0.0.1:8080/api/inc_visitor_count
 
 # Cosmos DB connection settings
 # cosmos_uri = os.environ["CosmosDBEndpointUri"]
@@ -195,14 +195,62 @@ if __name__ == '__main__':
 # container = database.get_container_client(container_name)
 
 
-# @app.route(route="incrementvisitorcount", auth_level=func.AuthLevel.FUNCTION)
-# def incrementvisitorcount(req: func.HttpRequest) -> func.HttpResponse:
-    
-#     logging.info(client)
+# import azure.functions as func
+# import logging
+# import json
+# import os
+# from azure.cosmos import CosmosClient
+
+# app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
+
+# @app.route(route="http_trigger1")
+# def http_trigger1(req: func.HttpRequest) -> func.HttpResponse:
+#     logging.info('Python HTTP trigger function processed a request.')
+
+#     name = req.params.get('name')
+#     if not name:
+#         try:
+#             req_body = req.get_json()
+#         except ValueError:
+#             pass
+#         else:
+#             name = req_body.get('name')
+
+#     if name:
+#         return func.HttpResponse(
+#         json.dumps({"message": f"Hello, {name}"}),
+#         mimetype="application/json",  # Set the correct content type
+#         status_code=200
+#     )
+#     else:
+#         return func.HttpResponse(
+#              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
+#              status_code=200
+#         )
+
+
+
+# @app.route(route="inc_visitor_count") #,auth_level=func.AuthLevel.FUNCTION)
+# def inc_visitor_count(req: func.HttpRequest) -> func.HttpResponse:
+#     # cosmos_uri = os.environ["CosmosDBEndpointUri"]
+#     COSMOS_URI = os.environ.get("COSMOS_URI")
+#     # COSMOS_KEY = os.environ.get('COSMOS_KEY')
+#     # DATABASE_NAME = os.environ.get('COSMOS_DATABASE')
+#     # CONTAINER_NAME = os.environ.get('COSMOS_CONTAINER')
+#     logging.info(COSMOS_URI)
+
+#     # Initialize the Cosmos client
+#     # client = CosmosClient(COSMOS_URI, credential=COSMOS_KEY_KEY)
+#     # database = client.get_database_client(DATABASE_NAME)
+#     # container = database.get_container_client(CONTAINER_NAME)
+
+#     # logging.info(client)
 
    
 #     response = {
-#         "visitor_count": 8
+#         "visitor_count": 8,
+#         "cosmos_uri": COSMOS_URI
+#         # ,"client": client
 #     }
 #     logging.info('visitor count processed')
 #     return func.HttpResponse(
@@ -210,4 +258,3 @@ if __name__ == '__main__':
 #         mimetype="application/json",  # Set the correct content type
 #         status_code=200
 #     )
-
