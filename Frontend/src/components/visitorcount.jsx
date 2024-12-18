@@ -7,7 +7,7 @@ const Visitorcount = () => {
   // Function to increase count when a user visits
   const fetchAPI = async () => {
     try {
-      const response = await fetch("http://localhost:7071/api/HttpTrigger", {
+      const response = await fetch("/api/HttpTrigger", {
         method: "POST",
       });
       const data = await response.json();
