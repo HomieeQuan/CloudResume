@@ -11,6 +11,8 @@ load_dotenv()
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
+    logging.info(f'Request method: {req.method}')
+    logging.info(f'Request headers: {dict(req.headers)}')
 
     # Get BASEURL from .env
    # Get BASEURL from .env and also support localhost development
