@@ -42,8 +42,11 @@ jobs:
       - name: Install Python dependencies
         run: |
           cd Backend
+          python -m venv .venv
+          source .venv/bin/activate
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          deactivate
 
       - name: Build And Deploy
         id: builddeploy
