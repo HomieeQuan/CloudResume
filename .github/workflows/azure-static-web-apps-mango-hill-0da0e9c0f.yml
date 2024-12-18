@@ -21,16 +21,33 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # or whichever version you're using
-      - name: Install dependencies and build
+          node-version: '18'
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install Frontend dependencies and build
         run: |
           cd Frontend
           rm -rf node_modules package-lock.json
           npm cache clean --force
           npm install
           npm install @rollup/rollup-linux-x64-gnu
+          npm run build
         env:
-          CI: false  # This prevents treats warnings as errors
+          CI: false
+
+      - name: Install Python dependencies
+        run: |
+          cd Backend
+          python -m venv .venv
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          deactivate
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -38,9 +55,10 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_MANGO_HILL_0DA0E9C0F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "./Frontend" # App source code path
-          api_location: "./azure-function" # Update this to your Azure Function folder name
-          output_location: "dist" # Built app content directory - optional
+          app_location: "./Frontend"
+          api_location: "./Backend"
+          output_location: "dist"
+
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
