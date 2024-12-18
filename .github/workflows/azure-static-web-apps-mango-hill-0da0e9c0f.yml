@@ -25,8 +25,10 @@ jobs:
       - name: Install dependencies and build
         run: |
           cd Frontend
-          npm install --platform=linux --arch=x64 --no-optional
-          npm run build
+          rm -rf node_modules package-lock.json
+          npm cache clean --force
+          npm install
+          npm install @rollup/rollup-linux-x64-gnu
         env:
           CI: false  # This prevents treats warnings as errors
       - name: Build And Deploy
