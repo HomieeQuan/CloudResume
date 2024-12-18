@@ -14,8 +14,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info(f'Request method: {req.method}')
     logging.info(f'Request headers: {dict(req.headers)}')
 
-    # Get BASEURL from .env
-   # Get BASEURL from .env and also support localhost development
+    # Get BASEURL from .env and also support localhost development
     base_url = os.getenv("BASEURL")
     allowed_origins = [base_url, "http://localhost:5173"]
     
@@ -26,6 +25,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
     }
+
+    # Handle OPTIONS request for CORS preflight
+    if req.method == "OPTIONS":
+        return func.HttpResponse(
+            status_code=204,
+            headers=headers
+        )
 
     try:
         # Get database connection info from .env file
@@ -116,13 +122,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             json.dumps({"error": str(e)}),
             mimetype="application/json",
             status_code=500,
-            headers=headers
-        )
-    
-     # Handle OPTIONS request for CORS preflight
-    if req.method == "OPTIONS":
-        return func.HttpResponse(
-            status_code=204,
             headers=headers
         )
 
