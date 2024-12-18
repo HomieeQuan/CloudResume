@@ -39,16 +39,19 @@ jobs:
         env:
           CI: false
 
-      - name: Install Python dependencies
+      - name: Prepare Backend
         run: |
-         cd Backend
-         python -m venv .venv
-         . .venv/bin/activate  # Use dot instead of source for better compatibility
-         python -m pip install --upgrade pip
-         pip install --target="." -r requirements.txt
+          cd Backend
+          # Fix Python file naming
+          if [ -f "HttpTrigger/_init_.py" ]; then
+            mv HttpTrigger/_init_.py HttpTrigger/__init__.py
+          fi
+          # Create python version file
+          echo "3.8" > .python_version
+          # Install dependencies directly without virtual environment
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
       
-         
-
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
