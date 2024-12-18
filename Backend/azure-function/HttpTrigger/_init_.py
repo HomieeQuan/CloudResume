@@ -116,6 +116,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             status_code=500,
             headers=headers
         )
+    
+     # Handle OPTIONS request for CORS preflight
+    if req.method == "OPTIONS":
+        return func.HttpResponse(
+            status_code=204,
+            headers=headers
+        )
 
     return func.HttpResponse(
         "Please use GET to retrieve count or POST to increment count.",
