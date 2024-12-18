@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies and build
         run: |
           cd Frontend
-          npm install
+          npm install --platform=linux --arch=x64 --no-optional
           npm run build
         env:
           CI: false  # This prevents treats warnings as errors
