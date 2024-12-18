@@ -1,3 +1,4 @@
 azure-functions==1.9.0
 azure-cosmos==4.2.0
 requests==2.25.1
+python-dotenv
