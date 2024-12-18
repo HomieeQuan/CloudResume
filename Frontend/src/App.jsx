@@ -11,22 +11,13 @@ import PostRequestComponent from './components/postrequest';
 
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [array, setArray] = useState([])
+ 
  
   
 
 
 
-  const fetchApi = async () => {
-    const response = await axios.get('http://localhost:8080/api/users')
-    console.log(response.data.users)
-    setArray(response.data.users)
-  }
-  useEffect(() => {
-    fetchApi()
-  }, [])
-
+  
   return (
     <Router>
       <div className="w-full min-h-screen bg-black relative overflow-hidden">
